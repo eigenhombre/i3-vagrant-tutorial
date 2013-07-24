@@ -40,6 +40,10 @@ Vagrant::Config.run do |config|
   # are contained in a directory path relative to this Vagrantfile.
   # You will need to create the manifests directory and a manifest in
   # the file scientificlinux-60.pp in the manifests_path directory.
+  config.vm.provision :shell, :path => "bash/install-puppet.sh"
+  config.vm.provision :shell, :path => "bash/install-epel.sh"
+  config.vm.provision :shell, :path => "bash/install-maven.sh"
+
   #
   # An example Puppet manifest to provision the message of the day:
   #
@@ -54,10 +58,11 @@ Vagrant::Config.run do |config|
   # #               Managed by Puppet.\n"
   # # }
   #
-  # config.vm.provision :puppet do |puppet|
-  #   puppet.manifests_path = "manifests"
-  #   puppet.manifest_file  = "scientificlinux-60.pp"
-  # end
+  config.vm.provision :puppet do |puppet|
+     puppet.manifests_path = "manifests"
+     puppet.manifest_file  = "scientificlinux-60.pp"
+     puppet.options        = "--verbose --debug"
+  end
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding 
